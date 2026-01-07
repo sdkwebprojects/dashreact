@@ -1,6 +1,6 @@
-const MAGENTO_BASE_URL = "https://www.urmet.fr";
+// const MAGENTO_BASE_URL = "https://www.urmet.fr";
 
-export type UserType = "particulierWithoutZeno" | "interneUrmet" | "InstallateurPremiumWithSite";
+export type UserType = 'particulierWithoutZeno' | 'interneUrmet' | 'InstallateurPremiumWithSite';
 
 export interface LoginCredentials {
   username: string;
@@ -10,7 +10,7 @@ export interface LoginCredentials {
 export interface UserInfo {
   name: string;
   userType: UserType;
-  contractType: "particulier" | "pro";
+  contractType: 'particulier' | 'pro';
 }
 
 export interface AuthResponse {
@@ -50,10 +50,10 @@ export class MagentoService {
 
     // Mock response
     if (credentials.username && credentials.password) {
-      return "fake-jwt-token-" + Date.now();
+      return 'fake-jwt-token-' + Date.now();
     }
 
-    throw new Error("Invalid credentials");
+    throw new Error('Invalid credentials');
   }
 
   /**
@@ -78,13 +78,13 @@ export class MagentoService {
     // Mock response
     if (token) {
       return {
-        name: "Leïla",
-        userType: "particulierWithoutZeno",
-        contractType: "particulier",
+        name: 'Leïla',
+        userType: 'particulierWithoutZeno',
+        contractType: 'particulier',
       };
     }
 
-    throw new Error("Invalid token");
+    throw new Error('Invalid token');
   }
 
   /**

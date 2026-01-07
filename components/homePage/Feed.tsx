@@ -1,6 +1,6 @@
-import React from "react";
-import FeedItem from "./FeedItem";
-import { useAuth } from "../../contexts/AuthContext";
+import React from 'react';
+import FeedItem from './FeedItem';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface FeedProps {
   title: string;
@@ -22,11 +22,11 @@ const Feed: React.FC<FeedProps> = ({
   const { FeedData } = data;
   return (
     <div
-      className={`flex flex-col w-[944] h-[226px] pt-3 gap-3 border border-gray-300 px-4 rounded-lg ${isBackgroundGray ? "bg-[#D7D7D7]" : ""} `}
+      className={`flex flex-col w-[944] h-[226px] pt-3 gap-3 border border-gray-300 px-4 rounded-lg ${isBackgroundGray ? 'bg-[#D7D7D7]' : ''} `}
     >
       <div className="flex w-[904] h-8 items-center justify-between">
         <span
-          className={`font-semibold leading-5 text-stark ${isTitleWrapped ? "text-wrap" : "text-nowrap"} `}
+          className={`font-semibold leading-5 text-stark ${isTitleWrapped ? 'text-wrap' : 'text-nowrap'} `}
         >
           {title}
         </span>

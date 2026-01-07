@@ -1,6 +1,6 @@
-import React from "react";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
-import { useAuth } from "../../contexts/AuthContext";
+import React from 'react';
+import ChevronRightIcon from '../icons/ChevronRightIcon';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ContactUsProps {
   title: string;
@@ -28,37 +28,37 @@ const ContactUs: React.FC<ContactUsProps> = ({
   // Contact data for Particulier users
   const particulierPhoneData: ContactPhoneData = {
     urmetElkron: {
-      phone: "0 899 705 634",
+      phone: '0 899 705 634',
       pricing: "0,80€/min + prix de l'appel",
     },
     yokis: {
-      phone: "07 55 85 86 87",
-      pricing: "",
+      phone: '07 55 85 86 87',
+      pricing: '',
     },
   };
 
   // Contact data for Pro users
   const proPhoneData: ContactPhoneData = {
     urmetElkron: {
-      phone: "0 825 890 830",
+      phone: '0 825 890 830',
       pricing: "0,15€/min + prix de l'appel",
     },
     yokis: {
-      phone: "0 899 797 999",
+      phone: '0 899 797 999',
       pricing: "0,50€/min + prix de l'appel",
     },
   };
 
   // Determine which data to use based on contract type
-  const isPro = userInfo?.contractType === "pro";
+  const isPro = userInfo?.contractType === 'pro';
   const phoneData = isPro ? proPhoneData : particulierPhoneData;
 
   return (
     <div
-      className={`flex flex-col border border-gray-300 p-4 gap-5 rounded-lg ${isBackgroundGray ? "bg-[#D7D7D7]" : ""} `}
+      className={`flex flex-col border border-gray-300 p-4 gap-5 rounded-lg ${isBackgroundGray ? 'bg-[#D7D7D7]' : ''} `}
     >
       <span
-        className={`font-semibold leading-5 ${isTitleWrapped ? "text-wrap" : "text-nowrap"} `}
+        className={`font-semibold leading-5 ${isTitleWrapped ? 'text-wrap' : 'text-nowrap'} `}
       >
         {title}
       </span>

@@ -1,12 +1,16 @@
-import { useAuth } from "../contexts/AuthContext";
-import { useState } from "react";
+import { useAuth } from '../contexts/AuthContext';
+import { useState } from 'react';
+import WarningIcon from '../components/icons/WarningIcon';
+import ChevronRightStrokeIcon from '../components/icons/ChevronRightStrokeIcon';
+import SearchIcon from '../components/icons/SearchIcon';
+import VerticalDotsIcon from '../components/icons/VerticalDotsIcon';
 
-export default function SubscriptionsPage() {
+export default function SubscriptionsPage(): React.JSX.Element {
   const { userInfo, data } = useAuth();
-  const [activeTab, setActiveTab] = useState<"subscriptions" | "contracts">("subscriptions");
+  const [activeTab, setActiveTab] = useState<'subscriptions' | 'contracts'>('subscriptions');
 
   // Access control
-  if (userInfo?.userType !== "InstallateurPremiumWithSite") {
+  if (userInfo?.userType !== 'InstallateurPremiumWithSite') {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
@@ -26,50 +30,50 @@ export default function SubscriptionsPage() {
   }
 
   const contractInfo = {
-    contractNumber: "89764534",
-    expiryDate: "04/09/2025",
+    contractNumber: '89764534',
+    expiryDate: '04/09/2025',
   };
 
   const subscriptionStats = [
-    { label: "Nombre de modem", value: "58", subtitle: "Depuis le 01/01/2025" },
-    { label: "Montant modem", value: "250,40 €", subtitle: "Depuis le 01/01/2025" },
-    { label: "Service additionnel", value: "564 €", subtitle: "Depuis le 01/01/2025" },
-    { label: "Total annuel", value: "4 520,80 €", subtitle: "Depuis le 01/01/2025" },
+    { label: 'Nombre de modem', value: '58', subtitle: 'Depuis le 01/01/2025' },
+    { label: 'Montant modem', value: '250,40 €', subtitle: 'Depuis le 01/01/2025' },
+    { label: 'Service additionnel', value: '564 €', subtitle: 'Depuis le 01/01/2025' },
+    { label: 'Total annuel', value: '4 520,80 €', subtitle: 'Depuis le 01/01/2025' },
   ];
 
   const subscriptionData = [
     {
-      contractNumber: "578619586",
-      site: "Les coquelicots",
-      operator: "LISA",
-      address: "3 impasse des coquelicots 75...",
-      contract: "Du 04/09/2024\nau 04/09/2025",
-      billing: "Pré-payé",
-      modemCount: "2 modems",
-      modemAmount: "0,90€ /mois",
-      additionalService: "1€ /mois",
+      contractNumber: '578619586',
+      site: 'Les coquelicots',
+      operator: 'LISA',
+      address: '3 impasse des coquelicots 75...',
+      contract: 'Du 04/09/2024\nau 04/09/2025',
+      billing: 'Pré-payé',
+      modemCount: '2 modems',
+      modemAmount: '0,90€ /mois',
+      additionalService: '1€ /mois',
     },
     {
-      contractNumber: "628619595",
-      site: "Jonquilles",
-      operator: "Tel2Voice",
-      address: "94 rue de la jacquette 92120...",
-      contract: "Du 21/06/2025",
-      billing: "Mensuelle",
-      modemCount: "1 modem",
-      modemAmount: "0,45€ /mois",
-      additionalService: "10€ /mois",
+      contractNumber: '628619595',
+      site: 'Jonquilles',
+      operator: 'Tel2Voice',
+      address: '94 rue de la jacquette 92120...',
+      contract: 'Du 21/06/2025',
+      billing: 'Mensuelle',
+      modemCount: '1 modem',
+      modemAmount: '0,45€ /mois',
+      additionalService: '10€ /mois',
     },
     {
-      contractNumber: "168619552",
-      site: "Primevère",
-      operator: "LISA",
-      address: "56 av. de la Dordogne 50200...",
-      contract: "Du 21/06/2025",
-      billing: "Mensuelle",
-      modemCount: "9 modems",
-      modemAmount: "4,05€ /mois",
-      additionalService: "Aucun",
+      contractNumber: '168619552',
+      site: 'Primevère',
+      operator: 'LISA',
+      address: '56 av. de la Dordogne 50200...',
+      contract: 'Du 21/06/2025',
+      billing: 'Mensuelle',
+      modemCount: '9 modems',
+      modemAmount: '4,05€ /mois',
+      additionalService: 'Aucun',
     },
   ];
 
@@ -78,21 +82,21 @@ export default function SubscriptionsPage() {
       {/* Tabs */}
       <div className="flex border-b border-gray-300">
         <button
-          onClick={() => setActiveTab("subscriptions")}
+          onClick={() => setActiveTab('subscriptions')}
           className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${
-            activeTab === "subscriptions"
-              ? "border-[#0066CC] text-[#0066CC]"
-              : "border-transparent text-gray-600 hover:text-gray-900"
+            activeTab === 'subscriptions'
+              ? 'border-[#0066CC] text-[#0066CC]'
+              : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
           Souscription
         </button>
         <button
-          onClick={() => setActiveTab("contracts")}
+          onClick={() => setActiveTab('contracts')}
           className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${
-            activeTab === "contracts"
-              ? "border-[#0066CC] text-[#0066CC]"
-              : "border-transparent text-gray-600 hover:text-gray-900"
+            activeTab === 'contracts'
+              ? 'border-[#0066CC] text-[#0066CC]'
+              : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
           Contrats
@@ -102,48 +106,20 @@ export default function SubscriptionsPage() {
         </button>
       </div>
 
-      {activeTab === "subscriptions" && (
+      {activeTab === 'subscriptions' && (
         <>
           {/* Contract expiry banner */}
           <div className="flex items-center justify-between bg-[#FFF4E5] border border-[#FFB020] rounded-lg p-4">
             <div className="flex items-center gap-2">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="10" cy="10" r="9" fill="#FFB020" />
-                <path
-                  d="M10 6V11M10 14H10.01"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <WarningIcon width={20} height={20} />
               <span className="text-sm text-stark">
-                Le contrat pré-payé n°{contractInfo.contractNumber} expire le{" "}
+                Le contrat pré-payé n°{contractInfo.contractNumber} expire le{' '}
                 {contractInfo.expiryDate}.
               </span>
             </div>
             <button className="flex items-center gap-1 text-[#0066CC] text-sm font-medium hover:underline">
               Renouveler
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6 4L10 8L6 12"
-                  stroke="#0066CC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronRightStrokeIcon width={16} height={16} />
             </button>
           </div>
 
@@ -166,28 +142,12 @@ export default function SubscriptionsPage() {
           {/* Search bar */}
           <div className="flex items-center gap-4">
             <div className="flex-1 relative">
-              <svg
+              <SearchIcon
                 className="absolute left-3 top-1/2 -translate-y-1/2"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="7"
-                  cy="7"
-                  r="5"
-                  stroke="#8994B5"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M11 11L14 14"
-                  stroke="#8994B5"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+                width={16}
+                height={16}
+                stroke="#8994B5"
+              />
               <input
                 type="text"
                 placeholder="Rechercher par n° d'abonnement, n° de site, adresse"
@@ -248,17 +208,7 @@ export default function SubscriptionsPage() {
                     <td className="p-3 text-[13px]">{sub.additionalService}</td>
                     <td className="p-3">
                       <button className="p-1 hover:bg-gray-100 rounded">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx="8" cy="3" r="1.5" fill="#374151" />
-                          <circle cx="8" cy="8" r="1.5" fill="#374151" />
-                          <circle cx="8" cy="13" r="1.5" fill="#374151" />
-                        </svg>
+                        <VerticalDotsIcon width={16} height={16} />
                       </button>
                     </td>
                   </tr>
@@ -299,7 +249,7 @@ export default function SubscriptionsPage() {
         </>
       )}
 
-      {activeTab === "contracts" && (
+      {activeTab === 'contracts' && (
         <div className="flex items-center justify-center h-64">
           <p className="text-gray-500">Onglet Contrats - À implémenter</p>
         </div>

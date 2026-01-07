@@ -1,17 +1,17 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import LogoutIcon from "./icons/LogoutIcon";
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import LogoutIcon from './icons/LogoutIcon';
 
 interface NavMenuProps {
   onLogout?: () => void;
-  userType?: string;
+  userType?: string | undefined;
 }
 
 const NavigationMenu: React.FC<NavMenuProps> = ({ onLogout, userType }) => {
   const router = useRouter();
 
-  const isActive = (path: string) => router.pathname === path;
+  const isActive = (path: string): boolean => router.pathname === path;
 
   return (
     <div className="flex flex-col justify-between p-5 border border-gray-300 rounded-lg w-60 h-[564px]">
@@ -19,35 +19,43 @@ const NavigationMenu: React.FC<NavMenuProps> = ({ onLogout, userType }) => {
         <nav className="flex flex-col gap-3 text-sm">
           <Link
             href="/"
-            className={`hover:underline text-[13px] ${isActive("/") ? "font-bold" : ""}`}
+            className={`hover:underline text-[13px] ${isActive('/') ? 'font-bold' : ''}`}
           >
             Tableau de Bord
           </Link>
-          {userType === "InstallateurPremiumWithSite" && (
+          {userType === 'InstallateurPremiumWithSite' && (
             <Link
               href="/premium"
-              className={`hover:underline text-[13px] ${isActive("/premium") ? "font-bold" : ""}`}
+              className={`hover:underline text-[13px] ${isActive('/premium') ? 'font-bold' : ''}`}
             >
               Premium
             </Link>
           )}
           <Link
             href="/orders"
-            className={`hover:underline text-[13px] ${isActive("/orders") ? "font-bold" : ""}`}
+            className={`hover:underline text-[13px] ${isActive('/orders') ? 'font-bold' : ''}`}
           >
             Commandes et retours
           </Link>
-          {userType === "InstallateurPremiumWithSite" && (
+          {userType === 'InstallateurPremiumWithSite' && (
+            <Link
+              href="/patrimoine"
+              className={`hover:underline text-[13px] ${isActive('/patrimoine') ? 'font-bold' : ''}`}
+            >
+              Patrimoine
+            </Link>
+          )}
+          {userType === 'InstallateurPremiumWithSite' && (
             <Link
               href="/subscriptions"
-              className={`hover:underline text-[13px] ${isActive("/subscriptions") ? "font-bold" : ""}`}
+              className={`hover:underline text-[13px] ${isActive('/subscriptions') ? 'font-bold' : ''}`}
             >
               Souscriptions et contrats
             </Link>
           )}
           <Link
             href="/account"
-            className={`hover:underline text-[13px] ${isActive("/account") ? "font-bold" : ""}`}
+            className={`hover:underline text-[13px] ${isActive('/account') ? 'font-bold' : ''}`}
           >
             Compte
           </Link>

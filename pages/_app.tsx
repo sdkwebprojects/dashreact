@@ -1,10 +1,10 @@
-import type { AppProps } from "next/app";
-import "../global.css";
-import NavigationMenu from "../components/NavigationMenu";
-import UserTypeSelector from "../components/UserTypeSelector";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import type { AppProps } from 'next/app';
+import '../global.css';
+import NavigationMenu from '../components/NavigationMenu';
+import UserTypeSelector from '../components/UserTypeSelector';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 
-function AppContent({ Component, pageProps }: AppProps) {
+function AppContent({ Component, pageProps }: AppProps): React.JSX.Element {
   const { isLoading, logout, userInfo } = useAuth();
 
   if (isLoading) {
@@ -30,7 +30,7 @@ function AppContent({ Component, pageProps }: AppProps) {
   );
 }
 
-function App(props: AppProps) {
+function App(props: AppProps): React.JSX.Element {
   return (
     <AuthProvider>
       <AppContent {...props} />

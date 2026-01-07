@@ -1,10 +1,10 @@
-import { useAuth } from "../contexts/AuthContext";
-import type { UserType } from "../services/magento";
+import { useAuth } from '../contexts/AuthContext';
+import type { UserType } from '../services/magento';
 
-export default function UserTypeSelector() {
+export default function UserTypeSelector(): React.JSX.Element {
   const { userInfo, switchUserType, isLoading } = useAuth();
 
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const newUserType = event.target.value as UserType;
     await switchUserType(newUserType);
   };
@@ -18,7 +18,7 @@ export default function UserTypeSelector() {
             type="radio"
             name="userType"
             value="particulierWithoutZeno"
-            checked={userInfo?.userType === "particulierWithoutZeno"}
+            checked={userInfo?.userType === 'particulierWithoutZeno'}
             onChange={handleChange}
             disabled={isLoading}
             className="w-4 h-4 cursor-pointer"
@@ -30,7 +30,7 @@ export default function UserTypeSelector() {
             type="radio"
             name="userType"
             value="interneUrmet"
-            checked={userInfo?.userType === "interneUrmet"}
+            checked={userInfo?.userType === 'interneUrmet'}
             onChange={handleChange}
             disabled={isLoading}
             className="w-4 h-4 cursor-pointer"
@@ -42,7 +42,7 @@ export default function UserTypeSelector() {
             type="radio"
             name="userType"
             value="InstallateurPremiumWithSite"
-            checked={userInfo?.userType === "InstallateurPremiumWithSite"}
+            checked={userInfo?.userType === 'InstallateurPremiumWithSite'}
             onChange={handleChange}
             disabled={isLoading}
             className="w-4 h-4 cursor-pointer"

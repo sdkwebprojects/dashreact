@@ -7,8 +7,8 @@ interface ThreeDotsIconProps {
 export default function ThreeDotsIcon({
   width = 16,
   height = 16,
-  className = "",
-}: ThreeDotsIconProps) {
+  className = '',
+}: Readonly<ThreeDotsIconProps>): React.JSX.Element {
   return (
     <svg
       width={width}

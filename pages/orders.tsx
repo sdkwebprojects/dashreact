@@ -1,12 +1,12 @@
-import { useState } from "react";
-import TabsDemo from "../components/common/Tabs";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import ThreeDotsIcon from "../components/icons/ThreeDotsIcon";
-import InfoIcon from "../components/icons/InfoIcon";
-import { useAuth } from "../contexts/AuthContext";
+import { useState } from 'react';
+import TabsDemo from '../components/common/Tabs';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import ThreeDotsIcon from '../components/icons/ThreeDotsIcon';
+import InfoIcon from '../components/icons/InfoIcon';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function OrdersPage() {
-  const [activeTab, setActiveTab] = useState("tab1");
+export default function OrdersPage(): React.JSX.Element {
+  const [activeTab, setActiveTab] = useState('tab1');
   const { data } = useAuth();
 
   if (!data) {
@@ -15,38 +15,46 @@ export default function OrdersPage() {
 
   const { OrdersHeadings, OrdersData, SAVHeadings, SAVData } = data;
 
-  function returnStatus(status) {
-    return status === "En attente de conf." ? (
-      <div className="bg-[#EAF3FE] px-4 py-1 text-[#0046DA] font-semibold rounded-2xl">
-        En attente de conf.
-      </div>
-    ) : status === "Expédiée" ? (
-      <div className="bg-[#EAFDED] text-[#06AB65] font-semibold px-4 py-1 rounded-2xl">
-        Expédiée
-      </div>
-    ) : (
-      <>{status}</>
-    );
+  function returnStatus(status: string): React.JSX.Element {
+    if (status === 'En attente de conf.') {
+      return (
+        <div className="bg-[#EAF3FE] px-4 py-1 text-[#0046DA] font-semibold rounded-2xl">
+          En attente de conf.
+        </div>
+      );
+    }
+    if (status === 'Expédiée') {
+      return (
+        <div className="bg-[#EAFDED] text-[#06AB65] font-semibold px-4 py-1 rounded-2xl">
+          Expédiée
+        </div>
+      );
+    }
+    return <>{status}</>;
   }
 
-  function returnSAVStatus(status) {
-    return status === "En attente de réception" ? (
-      <div className="bg-[#EAF3FE] px-4 py-1 text-[#0046DA] font-semibold rounded-2xl">
-        En attente de réception
-      </div>
-    ) : status === "Reçu" ? (
-      <div className="bg-[#EAFDED] text-[#06AB65] font-semibold px-4 py-1 rounded-2xl">
-        Reçu
-      </div>
-    ) : (
-      <>{status}</>
-    );
+  function returnSAVStatus(status: string): React.JSX.Element {
+    if (status === 'En attente de réception') {
+      return (
+        <div className="bg-[#EAF3FE] px-4 py-1 text-[#0046DA] font-semibold rounded-2xl">
+          En attente de réception
+        </div>
+      );
+    }
+    if (status === 'Reçu') {
+      return (
+        <div className="bg-[#EAFDED] text-[#06AB65] font-semibold px-4 py-1 rounded-2xl">
+          Reçu
+        </div>
+      );
+    }
+    return <>{status}</>;
   }
 
   return (
     <div className="flex flex-col gap-3">
       <TabsDemo activeTab={activeTab} onTabChange={setActiveTab} />
-      {activeTab === "tab1" ? (
+      {activeTab === 'tab1' ? (
         <>
           <p className="text-stark leading-5 text-[13px] font-normal ">
             Liste des services et des produits achetés uniquement sur ce site.
@@ -78,7 +86,7 @@ export default function OrdersPage() {
                       {order.order}
                     </td>
                     <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                      {order.amount === "Premium" ? (
+                      {order.amount === 'Premium' ? (
                         <div className="flex items-baseline-last gap-1">
                           Premium
                           <InfoIcon />

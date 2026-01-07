@@ -11,4 +11,4 @@ export {
   AccountData,
   type AccountField,
   type AccountSection,
-} from "./dummyData/particulierWithoutZeno";
+} from './dummyData/particulier-without-zeno';

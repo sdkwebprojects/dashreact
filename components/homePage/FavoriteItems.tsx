@@ -1,5 +1,5 @@
-import React from "react";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
+import React from 'react';
+import ChevronRightIcon from '../icons/ChevronRightIcon';
 
 interface FavoriteItemsProps {
   title: string;
@@ -14,11 +14,11 @@ const FavoriteItems: React.FC<FavoriteItemsProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col border border-gray-300 p-4 rounded-lg ${isBackgroundGray ? "bg-[#D7D7D7]" : ""} `}
+      className={`flex flex-col border border-gray-300 p-4 rounded-lg ${isBackgroundGray ? 'bg-[#D7D7D7]' : ''} `}
     >
       <div className="flex justify-between pb-4">
         <span
-          className={`font-semibold leading-5 text-stark ${isTitleWrapped ? "text-wrap" : "text-nowrap"} `}
+          className={`font-semibold leading-5 text-stark ${isTitleWrapped ? 'text-wrap' : 'text-nowrap'} `}
         >
           {title}
         </span>

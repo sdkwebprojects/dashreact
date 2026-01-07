@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import CloseIcon from "../icons/CloseIcon";
+import { ReactNode } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import CloseIcon from '../icons/CloseIcon';
 
 interface EditModalProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ export default function EditModal({
   title,
   children,
   trigger,
-}: EditModalProps) {
+}: Readonly<EditModalProps>): React.JSX.Element {
   return (
     <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>

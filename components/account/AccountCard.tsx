@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface AccountCardProps {
   title: string;
@@ -10,7 +10,7 @@ export default function AccountCard({
   title,
   modifierButton,
   children,
-}: AccountCardProps) {
+}: Readonly<AccountCardProps>): React.JSX.Element {
   return (
     <div className="p-5 border border-gray-300 rounded-lg">
       <div className="relative space-y-4">

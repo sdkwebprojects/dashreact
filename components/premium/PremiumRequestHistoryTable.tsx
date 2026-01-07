@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import EyeIcon from "../icons/EyeIcon";
+import React, { useState } from 'react';
+import EyeIcon from '../icons/EyeIcon';
+import SortIcon from '../icons/SortIcon';
 
 interface PremiumRequest {
   service: string;
@@ -12,40 +13,53 @@ interface PremiumRequestHistoryTableProps {
   data: PremiumRequest[];
 }
 
-const PremiumRequestHistoryTable: React.FC<PremiumRequestHistoryTableProps> = ({ headings, data }) => {
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
+const PremiumRequestHistoryTable: React.FC<PremiumRequestHistoryTableProps> = ({
+  headings,
+  data,
+}) => {
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
 
   // Sort data based on date
-  const sortedData = [...data].sort((a, b) => {
+  const sortedData = data.toSorted((a, b) => {
     if (sortOrder === null) return 0;
 
     // Extract date from format "Le DD/MM/YYYY"
-    const dateMatchA = a.date.match(/\d{2}\/\d{2}\/\d{4}/);
-    const dateMatchB = b.date.match(/\d{2}\/\d{2}\/\d{4}/);
+    const dateRegex = /\d{2}\/\d{2}\/\d{4}/;
+    const dateMatchA = dateRegex.exec(a.date);
+    const dateMatchB = dateRegex.exec(b.date);
 
     if (!dateMatchA || !dateMatchB) return 0;
 
-    const [dayA, monthA, yearA] = dateMatchA[0].split("/").map(Number);
-    const [dayB, monthB, yearB] = dateMatchB[0].split("/").map(Number);
+    const [dayA, monthA, yearA] = dateMatchA[0].split('/').map(Number);
+    const [dayB, monthB, yearB] = dateMatchB[0].split('/').map(Number);
 
-    const dateA = new Date(yearA, monthA - 1, dayA).getTime();
-    const dateB = new Date(yearB, monthB - 1, dayB).getTime();
+    if (yearA && yearB && monthA && monthB) {
+      const dateA = new Date(yearA, monthA - 1, dayA).getTime();
+      const dateB = new Date(yearB, monthB - 1, dayB).getTime();
 
-    if (sortOrder === "asc") {
-      return dateA - dateB;
-    } else {
-      return dateB - dateA;
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     }
+    return 0;
   });
 
-  const handleSort = () => {
+  const handleSort = (): void => {
     if (sortOrder === null) {
-      setSortOrder("desc");
-    } else if (sortOrder === "desc") {
-      setSortOrder("asc");
+      setSortOrder('desc');
+    } else if (sortOrder === 'desc') {
+      setSortOrder('asc');
     } else {
       setSortOrder(null);
     }
+  };
+
+  const getSortTitle = (): string => {
+    if (sortOrder === null) {
+      return 'Trier par date';
+    }
+    if (sortOrder === 'desc') {
+      return 'Trier du plus ancien au plus récent';
+    }
+    return 'Réinitialiser le tri';
   };
 
   return (
@@ -58,64 +72,15 @@ const PremiumRequestHistoryTable: React.FC<PremiumRequestHistoryTableProps> = ({
                 key={index}
                 className="text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1"
               >
-                {heading === "Date de la demande" ? (
+                {heading === 'Date de la demande' ? (
                   <div className="flex items-center gap-2">
                     <span>{heading}</span>
                     <button
                       onClick={handleSort}
                       className="p-1 hover:bg-gray-100 rounded transition-colors"
-                      title={
-                        sortOrder === null
-                          ? "Trier par date"
-                          : sortOrder === "desc"
-                          ? "Trier du plus ancien au plus récent"
-                          : "Réinitialiser le tri"
-                      }
+                      title={getSortTitle()}
                     >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        {sortOrder === null && (
-                          <>
-                            <path
-                              d="M3 5L6 2L9 5"
-                              stroke="#8994B5"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M3 7L6 10L9 7"
-                              stroke="#8994B5"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </>
-                        )}
-                        {sortOrder === "desc" && (
-                          <path
-                            d="M3 4L6 7L9 4"
-                            stroke="#0066CC"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        )}
-                        {sortOrder === "asc" && (
-                          <path
-                            d="M3 8L6 5L9 8"
-                            stroke="#0066CC"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        )}
-                      </svg>
+                      <SortIcon sortOrder={sortOrder} />
                     </button>
                   </div>
                 ) : (

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import AccountCard from "./AccountCard";
-import EditModal from "../common/EditModal";
-import FormField from "../common/FormField";
-import ModalActions from "../common/ModalActions";
-import { useAuth } from "../../contexts/AuthContext";
-import type { AccountField } from "../../dummyData/particulierWithoutZeno";
+import { useState } from 'react';
+import AccountCard from './AccountCard';
+import EditModal from '../common/EditModal';
+import FormField from '../common/FormField';
+import ModalActions from '../common/ModalActions';
+import { useAuth } from '../../contexts/AuthContext';
+import type { AccountField } from '../../dummyData/particulier-without-zeno';
 
-export default function MoyenPaiement() {
+export default function MoyenPaiement(): React.JSX.Element | null {
   const { data } = useAuth();
 
   if (!data) {
@@ -16,12 +16,12 @@ export default function MoyenPaiement() {
   const { AccountData } = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentData, setPaymentData] = useState({
-    modePaiement: "Prélèvement mensuel",
-    banque: "LCL",
-    iban: "FR**** **** **** **** **75G649 **",
+    modePaiement: 'Prélèvement mensuel',
+    banque: 'LCL',
+    iban: 'FR**** **** **** **** **75G649 **',
   });
 
-  const renderFieldValue = (field: AccountField) => {
+  const renderFieldValue = (field: AccountField): React.JSX.Element => {
     if (Array.isArray(field.value)) {
       return (
         <div className="flex flex-col gap-1 text-[13px] text-stark">
@@ -34,7 +34,7 @@ export default function MoyenPaiement() {
     return <p className="text-[13px] text-stark">{field.value}</p>;
   };
 
-  const renderAccountField = (field: AccountField, fieldIndex: number) => (
+  const renderAccountField = (field: AccountField, fieldIndex: number): React.JSX.Element => (
     <div key={fieldIndex}>
       {field.label && <p className="text-[13px] text-[#5F6C96]">{field.label}</p>}
       {renderFieldValue(field)}
@@ -64,9 +64,9 @@ export default function MoyenPaiement() {
               }
               type="select"
               options={[
-                { value: "Prélèvement mensuel", label: "Prélèvement mensuel" },
-                { value: "Carte bancaire", label: "Carte bancaire" },
-                { value: "Virement", label: "Virement" },
+                { value: 'Prélèvement mensuel', label: 'Prélèvement mensuel' },
+                { value: 'Carte bancaire', label: 'Carte bancaire' },
+                { value: 'Virement', label: 'Virement' },
               ]}
             />
             <FormField
@@ -88,7 +88,7 @@ export default function MoyenPaiement() {
         </EditModal>
       }
     >
-      {AccountData[2].fields.map(renderAccountField)}
+      {AccountData[2]?.fields.map((field, index) => renderAccountField(field, index))}
     </AccountCard>
   );
 }

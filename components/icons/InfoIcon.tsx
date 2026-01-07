@@ -8,9 +8,9 @@ interface InfoIconProps {
 export default function InfoIcon({
   width = 10,
   height = 10,
-  className = "",
-  fill = "#757575",
-}: InfoIconProps) {
+  className = '',
+  fill = '#757575',
+}: Readonly<InfoIconProps>): React.JSX.Element {
   return (
     <svg
       width={width}

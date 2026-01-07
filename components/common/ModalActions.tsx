@@ -1,4 +1,4 @@
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from '@radix-ui/react-dialog';
 
 interface ModalActionsProps {
   onCancel?: () => void;
@@ -8,7 +8,7 @@ interface ModalActionsProps {
 export default function ModalActions({
   onCancel,
   onSubmit,
-}: ModalActionsProps) {
+}: Readonly<ModalActionsProps>): React.JSX.Element {
   return (
     <div className="flex justify-end gap-3 pt-2">
       <Dialog.Close asChild>

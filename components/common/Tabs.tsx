@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Tabs } from "radix-ui";
-import { OrdersTabData } from "../../dummy_data";
+import * as React from 'react';
+import { Tabs } from 'radix-ui';
+import { OrdersTabData } from '../../dummy-data';
 
 interface TabsDemoProps {
   activeTab: string;
   onTabChange: (value: string) => void;
 }
 
-const TabsDemo = ({ activeTab, onTabChange }: TabsDemoProps) => {
+const TabsDemo = ({ activeTab, onTabChange }: TabsDemoProps): React.JSX.Element => {
   return (
     <Tabs.Root
       className="flex w-fit flex-col"

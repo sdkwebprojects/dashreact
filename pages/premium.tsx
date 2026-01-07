@@ -1,14 +1,16 @@
-import { useAuth } from "../contexts/AuthContext";
-import PremiumOffers from "../components/homePage/PremiumOffers";
-import PremiumServiceCard from "../components/premium/PremiumServiceCard";
-import PremiumRequestHistoryTable from "../components/premium/PremiumRequestHistoryTable";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useAuth } from '../contexts/AuthContext';
+import PremiumOffers from '../components/homePage/PremiumOffers';
+import PremiumServiceCard from '../components/premium/PremiumServiceCard';
+import PremiumRequestHistoryTable from '../components/premium/PremiumRequestHistoryTable';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import ChevronDownIcon from '../components/icons/ChevronDownIcon';
+import { Key } from 'react';
 
-export default function PremiumPage() {
+export default function PremiumPage(): React.JSX.Element {
   const { userInfo, data } = useAuth();
 
   // Access control
-  if (userInfo?.userType !== "InstallateurPremiumWithSite") {
+  if (userInfo?.userType !== 'InstallateurPremiumWithSite') {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
@@ -24,6 +26,10 @@ export default function PremiumPage() {
   }
 
   if (!data) {
+    return <div>Chargement...</div>;
+  }
+
+  if (!('PremiumOffers' in data) || !('PremiumServicesWithIcons' in data) || !('PremiumRequestHistory' in data) || !('PremiumRequestHistoryHeadings' in data)) {
     return <div>Chargement...</div>;
   }
 
@@ -47,21 +53,7 @@ export default function PremiumPage() {
               <DropdownMenu.Trigger asChild>
                 <button className="flex items-center gap-2 px-3 py-1 text-[13px] font-semibold text-[#0066CC] border border-[#0066CC] rounded-lg hover:bg-blue-50 hover:cursor-pointer">
                   Télécharger
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 5L6 8L9 5"
-                      stroke="#0066CC"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <ChevronDownIcon width={12} height={12} stroke="#0066CC" />
                 </button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Portal>
@@ -96,7 +88,7 @@ export default function PremiumPage() {
               Services en ligne inclus en illimité
             </h2>
             <div className="flex flex-wrap gap-3">
-              {PremiumServicesWithIcons.map((service) => (
+              {PremiumServicesWithIcons.map((service: { id: Key | null | undefined; title: string; link: string; }) => (
                 <PremiumServiceCard
                   key={service.id}
                   title={service.title}

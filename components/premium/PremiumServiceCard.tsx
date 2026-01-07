@@ -1,12 +1,12 @@
-import React from "react";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
+import React from 'react';
+import ChevronRightIcon from '../icons/ChevronRightIcon';
 
 interface PremiumServiceCardProps {
   title: string;
   link?: string;
 }
 
-const PremiumServiceCard: React.FC<PremiumServiceCardProps> = ({ title, link }) => {
+const PremiumServiceCard: React.FC<PremiumServiceCardProps> = ({ title }) => {
   return (
     <button className="flex items-center gap-3 p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
       <div className="w-6 h-10 bg-[#D9D9D9] rounded shrink-0" />

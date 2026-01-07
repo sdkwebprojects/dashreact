@@ -2,7 +2,7 @@ interface FormFieldProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  type?: "text" | "select";
+  type?: 'text' | 'select';
   options?: { value: string; label: string }[];
 }
 
@@ -10,16 +10,16 @@ export default function FormField({
   label,
   value,
   onChange,
-  type = "text",
+  type = 'text',
   options,
-}: FormFieldProps) {
+}: Readonly<FormFieldProps>): React.JSX.Element {
   const inputClassName =
-    "w-full px-3 py-2 border border-gray-300 rounded text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500";
+    'w-full px-3 py-2 border border-gray-300 rounded text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500';
 
   return (
     <div>
       <label className="block text-[13px] text-gray-600 mb-1">{label}</label>
-      {type === "select" && options ? (
+      {type === 'select' && options ? (
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}

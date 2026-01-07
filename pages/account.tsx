@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Tabs } from "radix-ui";
-import AccountCard from "../components/account/AccountCard";
-import InformationsPersonnelles from "../components/account/InformationsPersonnelles";
-import FacturationsExpeditions from "../components/account/FacturationsExpeditions";
-import MoyenPaiement from "../components/account/MoyenPaiement";
-import { AccountTabData } from "../dummy_data";
+import { useState } from 'react';
+import { Tabs } from 'radix-ui';
+import AccountCard from '../components/account/AccountCard';
+import InformationsPersonnelles from '../components/account/InformationsPersonnelles';
+import FacturationsExpeditions from '../components/account/FacturationsExpeditions';
+import MoyenPaiement from '../components/account/MoyenPaiement';
+import { AccountTabData } from '../dummy-data';
 
-export default function AccountPage() {
-  const [activeTab, setActiveTab] = useState("tab1");
+export default function AccountPage(): React.JSX.Element {
+  const [activeTab, setActiveTab] = useState('tab1');
 
   return (
     <div className="flex-1">
@@ -29,7 +29,7 @@ export default function AccountPage() {
         </Tabs.List>
       </Tabs.Root>
 
-      {activeTab === "tab1" && (
+      {activeTab === 'tab1' && (
         <div className="flex flex-col gap-5">
           <InformationsPersonnelles />
           <FacturationsExpeditions />
@@ -37,7 +37,7 @@ export default function AccountPage() {
         </div>
       )}
 
-      {activeTab === "tab2" && (
+      {activeTab === 'tab2' && (
         <div className="flex flex-col gap-5">
           <AccountCard
             title="Connexion"
@@ -89,7 +89,7 @@ export default function AccountPage() {
         </div>
       )}
 
-      {activeTab === "tab3" && (
+      {activeTab === 'tab3' && (
         <div className="flex flex-col gap-5">
           <AccountCard title="Newsletter" modifierButton={<div />}>
             <p className="text-[13px] text-stark">

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import AccountCard from "./AccountCard";
-import EditModal from "../common/EditModal";
-import FormField from "../common/FormField";
-import ModalActions from "../common/ModalActions";
-import { useAuth } from "../../contexts/AuthContext";
-import type { AccountField } from "../../dummyData/particulierWithoutZeno";
+import { useState } from 'react';
+import AccountCard from './AccountCard';
+import EditModal from '../common/EditModal';
+import FormField from '../common/FormField';
+import ModalActions from '../common/ModalActions';
+import { useAuth } from '../../contexts/AuthContext';
+import type { AccountField } from '../../dummyData/particulier-without-zeno';
 
-export default function InformationsPersonnelles() {
+export default function InformationsPersonnelles(): React.JSX.Element | null {
   const { data } = useAuth();
 
   if (!data) {
@@ -16,12 +16,12 @@ export default function InformationsPersonnelles() {
   const { AccountData } = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    prenom: "Claudine",
-    nom: "DELARUE",
-    societe: "Entreprise DELARUE",
+    prenom: 'Claudine',
+    nom: 'DELARUE',
+    societe: 'Entreprise DELARUE',
   });
 
-  const renderFieldValue = (field: AccountField) => {
+  const renderFieldValue = (field: AccountField): React.JSX.Element => {
     if (Array.isArray(field.value)) {
       return (
         <div className="flex flex-col gap-1 text-[13px] text-stark">
@@ -34,7 +34,7 @@ export default function InformationsPersonnelles() {
     return <p className="text-[13px] text-stark">{field.value}</p>;
   };
 
-  const renderAccountField = (field: AccountField, fieldIndex: number) => (
+  const renderAccountField = (field: AccountField, fieldIndex: number): React.JSX.Element => (
     <div key={fieldIndex}>
       {field.label && <p className="text-[13px] text-[#5F6C96]">{field.label}</p>}
       {renderFieldValue(field)}
@@ -76,7 +76,7 @@ export default function InformationsPersonnelles() {
         </EditModal>
       }
     >
-      {AccountData[0].fields.map(renderAccountField)}
+      {AccountData[0]?.fields.map((field, index) => renderAccountField(field, index))}
     </AccountCard>
   );
 }

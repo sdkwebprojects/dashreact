@@ -1,30 +1,31 @@
-import ServiceCard from "../components/homePage/ServiceCard";
-import QuoteCard from "../components/homePage/QuoteCard";
-import FavoriteItems from "../components/homePage/FavoriteItems";
-import Feed from "../components/homePage/Feed";
-import ContactUs from "../components/homePage/ContactUs";
-import PremiumContractBanner from "../components/homePage/PremiumContractBanner";
-import SiteInfo from "../components/homePage/SiteInfo";
-import ModemAlerts from "../components/homePage/ModemAlerts";
-import PremiumOffers from "../components/homePage/PremiumOffers";
-import { useAuth } from "../contexts/AuthContext";
+import ServiceCard from '../components/homePage/ServiceCard';
+import QuoteCard from '../components/homePage/QuoteCard';
+import FavoriteItems from '../components/homePage/FavoriteItems';
+import Feed from '../components/homePage/Feed';
+import ContactUs from '../components/homePage/ContactUs';
+import PremiumContractBanner from '../components/homePage/PremiumContractBanner';
+import SiteInfo from '../components/homePage/SiteInfo';
+import ModemAlerts from '../components/homePage/ModemAlerts';
+import PremiumOffers from '../components/homePage/PremiumOffers';
+import { useAuth } from '../contexts/AuthContext';
+import { Key } from 'react';
 
-export default function Page() {
+export default function Page(): React.JSX.Element {
   const { userInfo, data } = useAuth();
 
   const isPremiumInstaller =
-    userInfo?.userType === "InstallateurPremiumWithSite";
+    userInfo?.userType === 'InstallateurPremiumWithSite';
 
   const defaultServices = [
-    "Simuler mon projet",
-    "Trouver un installateur",
-    "Faire un retour SAV",
-    "Service après-vente",
-    "Explorer tous nos services",
+    'Simuler mon projet',
+    'Trouver un installateur',
+    'Faire un retour SAV',
+    'Service après-vente',
+    'Explorer tous nos services',
   ];
 
   const Services =
-    isPremiumInstaller && data?.PremiumServices
+    isPremiumInstaller && data && 'PremiumServices' in data
       ? data.PremiumServices
       : defaultServices;
 
@@ -34,14 +35,14 @@ export default function Page() {
         Bonjour {userInfo?.name} {isPremiumInstaller && <div className="font-semibold text-[13px] py-1 px-2 border border-black rounded-2xl">premium +</div>}
       </h1>
 
-      {isPremiumInstaller && data?.PremiumContractInfo && (
+      {isPremiumInstaller && data && 'PremiumContractInfo' in data && (
         <PremiumContractBanner
           contractNumber={data.PremiumContractInfo.contractNumber}
           expiryDate={data.PremiumContractInfo.expiryDate}
         />
       )}
 
-      {isPremiumInstaller && data?.ConsumptionSiteInfo && data?.ModemAlerts && (
+      {isPremiumInstaller && data && 'ConsumptionSiteInfo' in data && 'ModemAlerts' in data && (
         <div className="flex flex-col border border-gray-300 rounded-lg">
           <div className="flex items-center justify-between p-4">
             <h3 className="font-semibold text-stark">
@@ -62,7 +63,7 @@ export default function Page() {
         </div>
       )}
 
-      {isPremiumInstaller && data?.PremiumOffers && (
+      {isPremiumInstaller && data && 'PremiumOffers' in data && (
         <PremiumOffers offers={data.PremiumOffers} />
       )}
 
@@ -75,7 +76,7 @@ export default function Page() {
             </button>
           </div>
           <div className="flex gap-4 p-4">
-            {Services.map((element, index) => {
+            {Services.map((element: string, index: Key | null | undefined) => {
               return (
                 <ServiceCard
                   key={index}
@@ -91,7 +92,7 @@ export default function Page() {
 
       {!isPremiumInstaller && (
         <div className="flex w-[944px] gap-4 nowrap overflow-hidden">
-          {Services.map((element, index) => {
+          {Services.map((element: string, index: Key | null | undefined) => {
             return (
               <ServiceCard
                 key={index}
@@ -104,8 +105,8 @@ export default function Page() {
         </div>
       )}
       <div className="flex gap-5">
-        <QuoteCard title={"Faire une demande de devis"} />
-        <FavoriteItems title={"Vos articles favoris (4)"} />
+        <QuoteCard title={'Faire une demande de devis'} />
+        <FavoriteItems title={'Vos articles favoris (4)'} />
       </div>
 
       {!isPremiumInstaller && <Feed title="Nos actualités" />}

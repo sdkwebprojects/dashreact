@@ -1,5 +1,5 @@
-import React from "react";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
+import React from 'react';
+import ChevronRightIcon from '../icons/ChevronRightIcon';
 
 interface PremiumOffer {
   title: string;
@@ -22,10 +22,10 @@ const PremiumOffers: React.FC<PremiumOffersProps> = ({ offers, showTitle = true 
             <div className="text-sm font-semibold text-stark">{offer.title}</div>
             {offer.remaining && (
               <div className="">
-                <span className="text-2xl font-semibold text-stark">{offer.value.split("/")[0]}{" "}</span>
-                <span className="">restants{" "}</span>
+                <span className="text-2xl font-semibold text-stark">{offer.value?.split('/')[0]}{' '}</span>
+                <span className="">restants{' '}</span>
                 <span className="">
-                  / {offer.remaining.split("/")[1]}
+                  / {offer.remaining.split('/')[1]}
                 </span>
                 {offer.remaining}
               </div>

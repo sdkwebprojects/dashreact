@@ -8,9 +8,9 @@ interface ChevronRightIconProps {
 export default function ChevronRightIcon({
   width = 16,
   height = 16,
-  className = "",
-  fill = "black",
-}: ChevronRightIconProps) {
+  className = '',
+  fill = 'black',
+}: Readonly<ChevronRightIconProps>): React.JSX.Element {
   return (
     <svg
       width={width}

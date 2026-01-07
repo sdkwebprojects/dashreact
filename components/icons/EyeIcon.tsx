@@ -8,9 +8,9 @@ interface EyeIconProps {
 export default function EyeIcon({
   width = 16,
   height = 16,
-  className = "",
-  fill = "#1a1a1a",
-}: EyeIconProps) {
+  className = '',
+  fill = '#1a1a1a',
+}: Readonly<EyeIconProps>): React.JSX.Element {
   return (
     <svg
       width={width}

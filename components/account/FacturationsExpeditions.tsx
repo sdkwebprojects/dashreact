@@ -1,12 +1,12 @@
-import { useState } from "react";
-import AccountCard from "./AccountCard";
-import EditModal from "../common/EditModal";
-import FormField from "../common/FormField";
-import ModalActions from "../common/ModalActions";
-import { useAuth } from "../../contexts/AuthContext";
-import type { AccountField } from "../../dummyData/particulierWithoutZeno";
+import { useState } from 'react';
+import AccountCard from './AccountCard';
+import EditModal from '../common/EditModal';
+import FormField from '../common/FormField';
+import ModalActions from '../common/ModalActions';
+import { useAuth } from '../../contexts/AuthContext';
+import type { AccountField } from '../../dummyData/particulier-without-zeno';
 
-export default function FacturationsExpeditions() {
+export default function FacturationsExpeditions(): React.JSX.Element | null {
   const { data } = useAuth();
 
   if (!data) {
@@ -16,14 +16,14 @@ export default function FacturationsExpeditions() {
   const { AccountData } = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressData, setAddressData] = useState({
-    pays: "France",
-    adresse: "20 rue Ramier",
-    codePostal: "75001",
-    ville: "Paris",
+    pays: 'France',
+    adresse: '20 rue Ramier',
+    codePostal: '75001',
+    ville: 'Paris',
     differentAddress: false,
   });
 
-  const renderFieldValue = (field: AccountField) => {
+  const renderFieldValue = (field: AccountField): React.JSX.Element => {
     if (Array.isArray(field.value)) {
       return (
         <div className="flex flex-col gap-1 text-[13px] text-stark">
@@ -36,7 +36,7 @@ export default function FacturationsExpeditions() {
     return <p className="text-[13px] text-stark">{field.value}</p>;
   };
 
-  const renderAccountField = (field: AccountField, fieldIndex: number) => (
+  const renderAccountField = (field: AccountField, fieldIndex: number): React.JSX.Element => (
     <div key={fieldIndex}>
       {field.label && <p className="text-[13px] text-[#5F6C96]">{field.label}</p>}
       {renderFieldValue(field)}
@@ -69,9 +69,9 @@ export default function FacturationsExpeditions() {
               }
               type="select"
               options={[
-                { value: "France", label: "France" },
-                { value: "Belgique", label: "Belgique" },
-                { value: "Suisse", label: "Suisse" },
+                { value: 'France', label: 'France' },
+                { value: 'Belgique', label: 'Belgique' },
+                { value: 'Suisse', label: 'Suisse' },
               ]}
             />
             <FormField
@@ -120,7 +120,7 @@ export default function FacturationsExpeditions() {
         </EditModal>
       }
     >
-      {AccountData[1].fields.map(renderAccountField)}
+      {AccountData[1]?.fields.map((field, index) => renderAccountField(field, index))}
     </AccountCard>
   );
 }

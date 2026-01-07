@@ -1,14 +1,20 @@
-interface CloseIconProps {
+import React from 'react';
+
+interface WarningIconProps {
   width?: number;
   height?: number;
+  circleFill?: string;
+  strokeColor?: string;
   className?: string;
 }
 
-export default function CloseIcon({
+const WarningIcon: React.FC<WarningIconProps> = ({
   width = 20,
   height = 20,
+  circleFill = '#FFB020',
+  strokeColor = 'white',
   className = '',
-}: Readonly<CloseIconProps>): React.JSX.Element {
+}) => {
   return (
     <svg
       width={width}
@@ -18,12 +24,15 @@ export default function CloseIcon({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      <circle cx="10" cy="10" r="9" fill={circleFill} />
       <path
-        d="M15 5L5 15M5 5L15 15"
-        stroke="currentColor"
+        d="M10 6V11M10 14H10.01"
+        stroke={strokeColor}
         strokeWidth="2"
         strokeLinecap="round"
       />
     </svg>
   );
-}
+};
+
+export default WarningIcon;

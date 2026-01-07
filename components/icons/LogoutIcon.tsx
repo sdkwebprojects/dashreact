@@ -8,9 +8,9 @@ interface LogoutIconProps {
 export default function LogoutIcon({
   width = 24,
   height = 24,
-  className = "",
-  fill = "#404040",
-}: LogoutIconProps) {
+  className = '',
+  fill = '#404040',
+}: Readonly<LogoutIconProps>): React.JSX.Element {
   return (
     <svg
       width={width}

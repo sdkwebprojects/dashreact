@@ -1,6 +1,6 @@
-import React from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
+import React from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import ChevronRightIcon from '../icons/ChevronRightIcon';
 
 interface QuoteCardProps {
   title: string;
@@ -10,7 +10,7 @@ interface QuoteCardProps {
 
 const QuoteCard: React.FC<QuoteCardProps> = ({
   title,
-  isTitleWrapped = false,
+  isTitleWrapped: _isTitleWrapped = false,
   isBackgroundGray,
 }) => {
   const { data } = useAuth();
@@ -20,7 +20,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
   }
 
   const { QuoteData } = data;
-  const quoteCardItem = (text: string) => (
+  const quoteCardItem = (text: string): React.JSX.Element => (
     <div className="flex items-center p-5 border border-gray-300 rounded-lg gap-2.5">
       <div className="h-6 w-6 bg-[#D9D9D9] rounded-md" />
       <div className="font-semibold text-[13px] leading-5">{text}</div>
@@ -28,11 +28,11 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
   );
   return (
     <div
-      className={`flex flex-col grow border border-gray-300 p-4 gap-1 rounded-lg ${isBackgroundGray ? "bg-[#D7D7D7]" : ""} `}
+      className={`flex flex-col grow border border-gray-300 p-4 gap-1 rounded-lg ${isBackgroundGray ? 'bg-[#D7D7D7]' : ''} `}
     >
       <div className="flex justify-between pb-2.5">
         <span
-          className={`leading-5 text-stark font-semibold`}
+          className={'leading-5 text-stark font-semibold'}
         >
           {title}
         </span>
