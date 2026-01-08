@@ -4,13 +4,11 @@ import { useAuth } from '../../contexts/AuthContext';
 
 interface FeedProps {
   title: string;
-  isTitleWrapped?: boolean;
   isBackgroundGray?: boolean;
 }
 
 const Feed: React.FC<FeedProps> = ({
   title,
-  isTitleWrapped = false,
   isBackgroundGray,
 }) => {
   const { data } = useAuth();
@@ -26,7 +24,7 @@ const Feed: React.FC<FeedProps> = ({
     >
       <div className="flex w-[904] h-8 items-center justify-between">
         <span
-          className={`font-semibold leading-5 text-stark ${isTitleWrapped ? 'text-wrap' : 'text-nowrap'} `}
+          className='font-semibold leading-5 text-stark text-wrap'
         >
           {title}
         </span>

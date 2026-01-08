@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import PremiumOffers from '../components/homePage/PremiumOffers';
 import PremiumServiceCard from '../components/premium/PremiumServiceCard';

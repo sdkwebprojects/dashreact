@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ThreeDotsIconProps {
   width?: number;
   height?: number;

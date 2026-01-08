@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface LogoutIconProps {
   width?: number;
   height?: number;

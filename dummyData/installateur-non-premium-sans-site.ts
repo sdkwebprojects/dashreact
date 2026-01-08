@@ -32,12 +32,12 @@ export const QuoteData = [
   'Être accompagné par un commercial',
 ];
 
-// Services
+// Services specific to Installateur non premium sans site
 export const Services = [
-  'Simuler mon projet',
-  'Trouver un installateur',
-  'Faire un retour SAV',
+  'Trouver un commercial',
+  'Faites un retour SAV',
   'Service après-vente',
+  'Commander de nouveaux badges',
   'Explorer tous nos services',
 ];
 
@@ -148,9 +148,9 @@ export const AccountData: AccountSection[] = [
   {
     title: 'Informations personnelles',
     fields: [
-      { label: 'Civilité', value: 'Mme' },
-      { label: 'Nom et prénom', value: 'DELARUE Claudine' },
-      { label: 'Société', value: 'Entreprise DELARUE' },
+      { label: 'Civilité', value: 'M.' },
+      { label: 'Nom et prénom', value: 'INSTALLATEUR Jean' },
+      { label: 'Société', value: 'Entreprise INSTALLATEUR' },
     ],
   },
   {
@@ -175,3 +175,17 @@ export const AccountData: AccountSection[] = [
     ],
   },
 ];
+
+// Partner Banner Data
+export const PartnerBannerData = {
+  title: 'Devenez installateur partenaire',
+  description:
+    'Intégrez un réseau reconnu et accédez à nos offres de formation, un accompagnement personnalisé et des opportunités de marché privilégiées pour accompagner la croissance de votre activité.',
+  buttonText: 'Rejoindre',
+};
+
+// Info Banner Data for SAV returns
+export const InfoBannerData = {
+  message: '10 bons de retour sont en attente de réception et 24 viennent de passer au statut "reçu".',
+  actionLabel: 'Consulter',
+};

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import ThreeDotsIcon from '../icons/ThreeDotsIcon';
 import SortIcon from '../icons/SortIcon';
 import StarIcon from '../icons/StarIcon';
-import type { PatrimoineSite } from '../../dummyData/InstallateurPremiumWithSite';
+import MenuActionItem from './MenuActionItem';
+import type { PatrimoineSite } from '../../dummyData/installateur-premium-with-site';
+import { PatrimoineMenuActions } from '../../dummyData/installateur-premium-with-site';
+import { Table, Column } from '../common/Table';
 
 interface PatrimoineTableProps {
   headings: string[];
@@ -126,9 +129,122 @@ const PatrimoineTable: React.FC<PatrimoineTableProps> = ({
     };
   }, [openMenuId]);
 
+  // Define table columns
+  const columns: Column<PatrimoineSite>[] = [
+    {
+      key: 'favorite',
+      header: '',
+      headerClassName: 'w-4',
+      className: 'flex items-center pr-2 h-[50px] font-normal text-[13px] border-t border-gray-200',
+      render: (site) => (
+        <button
+          onClick={() => toggleFavorite(site.id)}
+          className="hover:opacity-70 transition-opacity cursor-pointer"
+          aria-label={
+            favorites.has(site.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'
+          }
+        >
+          <StarIcon width={16} height={16} filled={favorites.has(site.id)} />
+        </button>
+      ),
+    },
+    {
+      key: 'id',
+      header: headings[0] || 'N° de site',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+    },
+    {
+      key: 'name',
+      header: headings[1] || 'Nom et adresse',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+      render: (site) => (
+        <div>
+          <div className="font-normal">{site.name}</div>
+          <div className="text-gray-600">{site.address}</div>
+        </div>
+      ),
+    },
+    {
+      key: 'serviceDate',
+      header: (
+        <div className="flex items-center gap-2">
+          <span>{headings[2] || 'Date de mise en service'}</span>
+          <button
+            onClick={handleSort}
+            className="p-1 hover:bg-gray-100 rounded transition-colors"
+            title={getSortTitle()}
+          >
+            <SortIcon sortOrder={sortOrder} />
+          </button>
+        </div>
+      ),
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+    },
+    {
+      key: 'connected',
+      header: headings[3] || 'Connecté',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+      render: (site) => (site.connected ? 'Oui' : 'Non'),
+    },
+    {
+      key: 'technology',
+      header: headings[4] || 'Technologie',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+    },
+    {
+      key: 'hasMaintenanceContract',
+      header: headings[5] || 'Contrat maintenance',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+      render: (site) => (site.hasMaintenanceContract ? 'Oui' : 'Non'),
+    },
+    {
+      key: 'actions',
+      header: '',
+      className: 'h-[50px] font-normal text-[13px] border-t border-gray-200',
+      headerClassName: 'text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1',
+      render: (site) => (
+        <div className="relative menu-container">
+          <button
+            className="border border-gray-300 p-1 rounded hover:bg-gray-50"
+            onClick={() => toggleMenu(site.id)}
+          >
+            <ThreeDotsIcon width={16} height={16} />
+          </button>
+          {openMenuId === site.id && (
+            <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-10 py-1">
+              {PatrimoineMenuActions.map((action) => (
+                <MenuActionItem
+                  key={action.id}
+                  onClick={() => handleMenuAction(action.id, site.id)}
+                  {...(action.showBottomBorder !== undefined && {
+                    showBottomBorder: action.showBottomBorder,
+                  })}
+                >
+                  {action.label}
+                </MenuActionItem>
+              ))}
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <div className="pt-2 ">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="pt-1">
+      <Table
+        columns={columns}
+        data={sortedData}
+        minHeight="auto"
+        rowClassName="hover:bg-gray-50"
+        header={
+      <div className="flex w-1/2 items-center gap-4 mb-2">
         <div className="relative flex-1">
           <input
             type="text"
@@ -157,163 +273,9 @@ const PatrimoineTable: React.FC<PatrimoineTableProps> = ({
           </div>
         </div>
       </div>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr>
-            <th className="w-4"></th>
-            {headings.map((heading, index) => (
-              <th
-                key={index}
-                className="text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1"
-              >
-                {heading === 'Date de mise en service' ? (
-                  <div className="flex items-center gap-2">
-                    <span>{heading}</span>
-                    <button
-                      onClick={handleSort}
-                      className="p-1 hover:bg-gray-100 rounded transition-colors"
-                      title={getSortTitle()}
-                    >
-                      <SortIcon sortOrder={sortOrder} />
-                    </button>
-                  </div>
-                ) : (
-                  heading
-                )}
-              </th>
-            ))}
-            <th className="text-left font-semibold leading-4 text-[#8994B5] text-[11px] pb-1"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedData.map((site) => (
-            <tr key={site.id}>
-              <td className="flex items-center pr-2 h-[50px] font-normal text-[13px] border-t border-gray-200">
-                <button
-                  onClick={() => toggleFavorite(site.id)}
-                  className="hover:opacity-70 transition-opacity cursor-pointer"
-                  aria-label={
-                    favorites.has(site.id)
-                      ? 'Retirer des favoris'
-                      : 'Ajouter aux favoris'
-                  }
-                >
-                  <StarIcon
-                    width={16}
-                    height={16}
-                    filled={favorites.has(site.id)}
-                  />
-                </button>
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                {site.id}
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                <div>
-                  <div className="font-normal">{site.name}</div>
-                  <div className="text-gray-600">{site.address}</div>
-                </div>
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                {site.serviceDate}
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                {site.connected ? 'Oui' : 'Non'}
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                {site.technology}
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                {site.hasMaintenanceContract ? 'Oui' : 'Non'}
-              </td>
-              <td className="h-[50px] font-normal text-[13px] border-t border-gray-200">
-                <div className="relative menu-container">
-                  <button
-                    className="border border-gray-300 p-1 rounded hover:bg-gray-50"
-                    onClick={() => toggleMenu(site.id)}
-                  >
-                    <ThreeDotsIcon width={16} height={16} />
-                  </button>
-                  {openMenuId === site.id && (
-                    <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-10 py-1">
-                      <button
-                        onClick={() => handleMenuAction('voir-plus', site.id)}
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Voir plus d'informations
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('voir-consommation', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Voir la consommation
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('statut-modems', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Consulter le statut de mes modems
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('offre-additionnelle', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Ajouter une offre additionnelle
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('gestion-site', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Accéder à la gestion du site
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('badge-programme', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Commander un badge programmé
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('telecommande-programme', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Commander une télécommande programmée
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('passe-programme', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 border-b border-gray-200"
-                      >
-                        Commander un passe programmé
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleMenuAction('modifier-materiel', site.id)
-                        }
-                        className="w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50"
-                      >
-                        Modifier une information sur du matériel
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+        }
+      />
       <div className="flex items-center justify-center gap-4 pt-4 pb-2">
         <div className="flex items-center gap-2 text-[13px] text-gray-600">
           <span>Afficher</span>

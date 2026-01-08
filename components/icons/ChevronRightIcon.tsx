@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ChevronRightIconProps {
   width?: number;
   height?: number;

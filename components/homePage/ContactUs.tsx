@@ -4,7 +4,6 @@ import { useAuth } from '../../contexts/AuthContext';
 
 interface ContactUsProps {
   title: string;
-  isTitleWrapped?: boolean;
   isBackgroundGray?: boolean;
 }
 
@@ -20,7 +19,6 @@ interface ContactPhoneData {
 
 const ContactUs: React.FC<ContactUsProps> = ({
   title,
-  isTitleWrapped = false,
   isBackgroundGray,
 }) => {
   const { userInfo } = useAuth();
@@ -58,7 +56,7 @@ const ContactUs: React.FC<ContactUsProps> = ({
       className={`flex flex-col border border-gray-300 p-4 gap-5 rounded-lg ${isBackgroundGray ? 'bg-[#D7D7D7]' : ''} `}
     >
       <span
-        className={`font-semibold leading-5 ${isTitleWrapped ? 'text-wrap' : 'text-nowrap'} `}
+        className='font-semibold leading-5 text-wrap'
       >
         {title}
       </span>

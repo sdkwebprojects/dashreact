@@ -32,6 +32,18 @@ export const QuoteData = [
   'Être accompagné par un commercial',
 ];
 
+// Services
+export const Services = [
+  'Simuler mon projet',
+  'Trouver un installateur',
+  'Faire un retour SAV',
+  'Service après-vente',
+  'Explorer tous nos services',
+];
+
+// Favorite Products
+export { FavoriteProducts, type FavoriteProduct } from './favorite-products';
+
 // Orders Data
 export const OrdersHeadings = [
   'Ref. Produit',

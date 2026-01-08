@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import type { UserType } from '../services/magento';
 
@@ -48,6 +49,30 @@ export default function UserTypeSelector(): React.JSX.Element {
             className="w-4 h-4 cursor-pointer"
           />
           <span className="text-sm">Installateur Premium avec site</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="userType"
+            value="installateurNonPremiumSansSite"
+            checked={userInfo?.userType === 'installateurNonPremiumSansSite'}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-4 h-4 cursor-pointer"
+          />
+          <span className="text-sm">Installateur non premium sans site</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="userType"
+            value="promoteurBe"
+            checked={userInfo?.userType === 'promoteurBe'}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-4 h-4 cursor-pointer"
+          />
+          <span className="text-sm">Promoteur BE</span>
         </label>
       </div>
     </div>

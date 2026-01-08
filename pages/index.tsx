@@ -1,33 +1,35 @@
-import ServiceCard from '../components/homePage/ServiceCard';
+import React from 'react';
 import QuoteCard from '../components/homePage/QuoteCard';
 import FavoriteItems from '../components/homePage/FavoriteItems';
 import Feed from '../components/homePage/Feed';
 import ContactUs from '../components/homePage/ContactUs';
-import PremiumContractBanner from '../components/homePage/PremiumContractBanner';
-import SiteInfo from '../components/homePage/SiteInfo';
-import ModemAlerts from '../components/homePage/ModemAlerts';
 import PremiumOffers from '../components/homePage/PremiumOffers';
+import PartnerInstallerCta from '../components/homePage/PartnerInstallerCta';
+import SiteInformationSection from '../components/homePage/SiteInformationSection';
+import PremiumServicesSection from '../components/homePage/PremiumServicesSection';
+import ServicesGrid from '../components/homePage/ServicesGrid';
+import InfoBanner from '../components/common/InfoBanner';
+import InfoIcon from '../components/icons/InfoIcon';
+import ChevronRightStrokeIcon from '../components/icons/ChevronRightStrokeIcon';
 import { useAuth } from '../contexts/AuthContext';
-import { Key } from 'react';
+import WarningIcon from '../components/icons/WarningIcon';
+import ExternalLinkIcon from '../components/icons/ExternalLinkIcon';
 
 export default function Page(): React.JSX.Element {
   const { userInfo, data } = useAuth();
 
+  const isParticulierWithoutZeno = userInfo?.userType === 'particulierWithoutZeno';
+
+  const isInterneUrmet = userInfo?.userType === 'interneUrmet'
+
   const isPremiumInstaller =
     userInfo?.userType === 'InstallateurPremiumWithSite';
 
-  const defaultServices = [
-    'Simuler mon projet',
-    'Trouver un installateur',
-    'Faire un retour SAV',
-    'Service après-vente',
-    'Explorer tous nos services',
-  ];
+  const isNonPremiumInstaller =
+    userInfo?.userType === 'installateurNonPremiumSansSite';
 
-  const Services =
-    isPremiumInstaller && data && 'PremiumServices' in data
-      ? data.PremiumServices
-      : defaultServices;
+  const isPromoteurBe =
+    userInfo?.userType === 'promoteurBe';
 
   return (
     <div className="flex flex-col gap-5">
@@ -36,77 +38,65 @@ export default function Page(): React.JSX.Element {
       </h1>
 
       {isPremiumInstaller && data && 'PremiumContractInfo' in data && (
-        <PremiumContractBanner
-          contractNumber={data.PremiumContractInfo.contractNumber}
-          expiryDate={data.PremiumContractInfo.expiryDate}
+        <InfoBanner
+          variant="warning"
+          icon={<WarningIcon width={20} height={20} />}
+          message={`Le contrat pré-payé n°${data.PremiumContractInfo.contractNumber} expire le ${data.PremiumContractInfo.expiryDate}.`}
+          actionButton={{
+            label: 'Renouveler',
+            icon: <ExternalLinkIcon width={16} height={16} fill="#0066CC" />,
+            href: '/subscriptions'
+          }}
+        />
+      )}
+
+      {isNonPremiumInstaller && data && 'InfoBannerData' in data && (
+        <InfoBanner
+          variant="info"
+          icon={<InfoIcon width={20} height={20} fill="#0066CC" />}
+          message={data.InfoBannerData.message}
+          actionButton={{
+            label: data.InfoBannerData.actionLabel,
+            icon: <ChevronRightStrokeIcon width={16} height={16} stroke="#0066CC" />,
+            href: '/orders'
+          }}
         />
       )}
 
       {isPremiumInstaller && data && 'ConsumptionSiteInfo' in data && 'ModemAlerts' in data && (
-        <div className="flex flex-col border border-gray-300 rounded-lg">
-          <div className="flex items-center justify-between p-4">
-            <h3 className="font-semibold text-stark">
-              Informations sur vos sites
-            </h3>
-            <button className="px-3 py-1 rounded-lg font-semibold  text-[13px] text-[#0066CC] border border-[#0066CC] hover:bg-blue-50">
-              Voir tous vos sites
-            </button>
-          </div>
-          <div className="flex gap-4 p-4">
-            <SiteInfo
-              title={data.ConsumptionSiteInfo.title}
-              sites={data.ConsumptionSiteInfo.sites}
-              defaultSite={data.ConsumptionSiteInfo.defaultSite}
-            />
-            <ModemAlerts alerts={data.ModemAlerts} />
-          </div>
-        </div>
+        <SiteInformationSection
+          consumptionSiteInfo={data.ConsumptionSiteInfo}
+          modemAlerts={data.ModemAlerts}
+        />
       )}
 
       {isPremiumInstaller && data && 'PremiumOffers' in data && (
         <PremiumOffers offers={data.PremiumOffers} />
       )}
 
-      {isPremiumInstaller && (
-        <div className="flex flex-col border border-gray-300 rounded-lg">
-          <div className="flex items-center justify-between p-4">
-            <h3 className="font-semibold text-stark">Vos services</h3>
-            <button className="px-3 py-1 rounded-lg font-semibold  text-[13px] text-[#0066CC] border border-[#0066CC] hover:bg-blue-50">
-              Explorer tous nos services
-            </button>
-          </div>
-          <div className="flex gap-4 p-4">
-            {Services.map((element: string, index: Key | null | undefined) => {
-              return (
-                <ServiceCard
-                  key={index}
-                  title={element}
-                  isBackgroundGray={index === Services.length - 1}
-                  isTitleWrapped={true}
-                />
-              );
-            })}
-          </div>
-        </div>
+      {data && isPremiumInstaller && (
+        <PremiumServicesSection services={data.Services} />
       )}
 
-      {!isPremiumInstaller && (
-        <div className="flex w-[944px] gap-4 nowrap overflow-hidden">
-          {Services.map((element: string, index: Key | null | undefined) => {
-            return (
-              <ServiceCard
-                key={index}
-                title={element}
-                isBackgroundGray={index === Services.length - 1}
-                isTitleWrapped={index === Services.length - 1}
-              />
-            );
-          })}
-        </div>
+      {data && (isNonPremiumInstaller || isInterneUrmet || isParticulierWithoutZeno || isPromoteurBe) && <ServicesGrid services={data.Services} />}
+
+
+      {isNonPremiumInstaller && data && 'PartnerBannerData' in data && (
+        <PartnerInstallerCta
+          title={data.PartnerBannerData.title}
+          description={data.PartnerBannerData.description}
+          buttonText={data.PartnerBannerData.buttonText}
+        />
       )}
+
       <div className="flex gap-5">
         <QuoteCard title={'Faire une demande de devis'} />
-        <FavoriteItems title={'Vos articles favoris (4)'} />
+        {data && 'FavoriteProducts' in data && (
+          <FavoriteItems
+            title={`Vos articles favoris (${data.FavoriteProducts.length})`}
+            favorites={data.FavoriteProducts}
+          />
+        )}
       </div>
 
       {!isPremiumInstaller && <Feed title="Nos actualités" />}

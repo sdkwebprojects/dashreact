@@ -1,16 +1,15 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import ChevronRightIcon from '../icons/ChevronRightIcon';
+import Link from 'next/link';
 
 interface QuoteCardProps {
   title: string;
-  isTitleWrapped?: boolean;
   isBackgroundGray?: boolean;
 }
 
 const QuoteCard: React.FC<QuoteCardProps> = ({
   title,
-  isTitleWrapped: _isTitleWrapped = false,
   isBackgroundGray,
 }) => {
   const { data } = useAuth();
@@ -36,9 +35,9 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
         >
           {title}
         </span>
-        <div>
+        <Link href="https://www.urmet.fr/demander-un-devis">
           <ChevronRightIcon width={21} height={21} />
-        </div>
+        </Link>
       </div>
       <div className="flex flex-col gap-3">
         {QuoteData.map((q) => quoteCardItem(q))}

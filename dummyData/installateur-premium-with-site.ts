@@ -83,7 +83,7 @@ export const PremiumOffers = [
   },
 ];
 
-export const PremiumServices = [
+export const Services = [
   'Commander un nouveau badge programmé',
   'Changer une information sur une platine',
   'Faire un retour SAV',
@@ -91,16 +91,7 @@ export const PremiumServices = [
   'Explorer tous nos services',
 ];
 
-export const FavoriteProducts = [
-  {
-    ref: 'D83/PHILIPP',
-    name: 'Plaque à défilement vidéo caméra discrète',
-  },
-  {
-    ref: 'BEQLE01',
-    name: 'Béquille VIKY avec profil européen',
-  },
-];
+export { FavoriteProducts, type FavoriteProduct } from './favorite-products';
 
 // Premium Services with icons for the Premium page
 export const PremiumServicesWithIcons = [
@@ -279,97 +270,122 @@ export interface PatrimoineSite {
   isFavorite?: boolean;
 }
 
-export const PatrimoineSites: PatrimoineSite[] = [
-  {
-    id: '10326520',
-    name: 'Les coquelicots',
-    address: '3 impasse des coquelicots 75...',
-    serviceDate: 'Le 22/07/2025',
-    connected: true,
-    technology: 'HBS',
-    hasMaintenanceContract: true,
-    isFavorite: true,
-  },
-  {
-    id: '21092763',
-    name: 'Primevère',
-    address: '56 av. de la Dordogne 50200...',
-    serviceDate: 'Le 18/05/2024',
-    connected: true,
-    technology: 'T2V',
-    hasMaintenanceContract: false,
-  },
-  {
-    id: '89764534',
-    name: 'Jonquilles',
-    address: '94 rue de la jacquette 92120...',
-    serviceDate: 'Le 02/12/2023',
-    connected: false,
-    technology: 'L/E',
-    hasMaintenanceContract: false,
-  },
-  {
-    id: '34567821',
-    name: 'Primevère',
-    address: '56 av. de la Dordogne 50200...',
-    serviceDate: 'Le 18/05/2024',
-    connected: true,
-    technology: '2V 4G',
-    hasMaintenanceContract: false,
-    isFavorite: false,
-  },
-  {
-    id: '45678912',
-    name: 'Jonquilles',
-    address: '94 rue de la jacquette 92120...',
-    serviceDate: 'Le 02/12/2023',
-    connected: false,
-    technology: 'L/E',
-    hasMaintenanceContract: true,
-  },
-  {
-    id: '56789123',
-    name: 'Primevère',
-    address: '56 av. de la Dordogne 50200...',
-    serviceDate: 'Le 18/05/2024',
-    connected: false,
-    technology: '2V 4G',
-    hasMaintenanceContract: true,
-  },
-  {
-    id: '67891234',
-    name: 'Jonquilles',
-    address: '94 rue de la jacquette 92120...',
-    serviceDate: 'Le 02/12/2023',
-    connected: true,
-    technology: 'T2V',
-    hasMaintenanceContract: true,
-  },
-  {
-    id: '78912345',
-    name: 'Primevère',
-    address: '56 av. de la Dordogne 50200...',
-    serviceDate: 'Le 18/05/2024',
-    connected: true,
-    technology: 'HBS',
-    hasMaintenanceContract: true,
-  },
-  {
-    id: '89123456',
-    name: 'Jonquilles',
-    address: '94 rue de la jacquette 92120...',
-    serviceDate: 'Le 02/12/2023',
-    connected: false,
-    technology: 'T2V',
-    hasMaintenanceContract: false,
-  },
-  {
-    id: '91234567',
-    name: 'Jonquilles',
-    address: '94 rue de la jacquette 92120...',
-    serviceDate: 'Le 02/12/2023',
-    connected: true,
-    technology: '2V 4G',
-    hasMaintenanceContract: true,
-  },
+export interface PatrimoineMenuAction {
+  id: string;
+  label: string;
+  showBottomBorder?: boolean;
+}
+
+export const PatrimoineMenuActions: PatrimoineMenuAction[] = [
+  { id: 'voir-plus', label: "Voir plus d'informations" },
+  { id: 'voir-consommation', label: 'Voir la consommation' },
+  { id: 'statut-modems', label: 'Consulter le statut de mes modems' },
+  { id: 'offre-additionnelle', label: 'Ajouter une offre additionnelle' },
+  { id: 'gestion-site', label: 'Accéder à la gestion du site', showBottomBorder: true },
+  { id: 'badge-programme', label: 'Commander un badge programmé' },
+  { id: 'telecommande-programme', label: 'Commander une télécommande programmée' },
+  { id: 'passe-programme', label: 'Commander un passe programmé', showBottomBorder: true },
+  { id: 'modifier-materiel', label: 'Modifier une information sur du matériel' },
 ];
+
+const generatePatrimoineSites = (): PatrimoineSite[] => {
+  const siteNames = ['Les coquelicots', 'Primevère', 'Jonquilles', 'Les roses', 'Les tulipes', 'Marguerites', 'Orchidées', 'Violettes', 'Lys', 'Iris'];
+  const addresses = [
+    '3 impasse des coquelicots 75...',
+    '56 av. de la Dordogne 50200...',
+    '94 rue de la jacquette 92120...',
+    '12 avenue des roses 75018...',
+    '8 rue des tulipes 75020...',
+    '45 boulevard Voltaire 75011...',
+    '23 rue de la Paix 75002...',
+    '67 av. des Champs-Élysées 75008...',
+    '89 rue de Rivoli 75004...',
+    '34 place de la République 75010...',
+  ];
+  const technologies = ['HBS', 'T2V', 'L/E', '2V 4G'];
+  const sites: PatrimoineSite[] = [];
+
+  for (let i = 0; i < 113; i++) {
+    const siteNameBase = siteNames[i % siteNames.length];
+    const siteName = siteNameBase + (i >= siteNames.length ? ` ${Math.floor(i / siteNames.length) + 1}` : '');
+    const address = addresses[i % addresses.length] as string;
+    const technology = technologies[i % technologies.length] as string;
+    const connected = Math.random() > 0.3; // 70% connected
+    const hasMaintenanceContract = Math.random() > 0.4; // 60% have contracts
+    const isFavorite = i < 3 ? true : Math.random() > 0.9; // First 3 are favorites, then 10% chance
+
+    // Generate random dates within the last 2 years
+    const daysAgo = Math.floor(Math.random() * 730); // 0-730 days ago
+    const date = new Date();
+    date.setDate(date.getDate() - daysAgo);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const serviceDate = `Le ${day}/${month}/${year}`;
+
+    // Generate ID
+    const baseId = 10_000_000;
+    const increment = 123_456;
+    const id = String(baseId + i * increment).slice(0, 8);
+
+    sites.push({
+      id,
+      name: siteName,
+      address,
+      serviceDate,
+      connected,
+      technology,
+      hasMaintenanceContract,
+      isFavorite,
+    });
+  }
+
+  return sites;
+};
+
+export const PatrimoineSites: PatrimoineSite[] = generatePatrimoineSites();
+
+export interface PaginationParams {
+  page: number;
+  pageSize: number;
+  searchQuery?: string;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export const getPaginatedPatrimoineSites = ({
+  page,
+  pageSize,
+  searchQuery = '',
+}: PaginationParams): PaginatedResponse<PatrimoineSite> => {
+  let filteredData = PatrimoineSites;
+
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredData = filteredData.filter(
+      (site) =>
+        site.id.toLowerCase().includes(query) ||
+        site.name.toLowerCase().includes(query) ||
+        site.address.toLowerCase().includes(query)
+    );
+  }
+
+  const total = filteredData.length;
+  const totalPages = Math.ceil(total / pageSize);
+  const startIndex = (page - 1) * pageSize;
+  const items = filteredData.slice(startIndex, startIndex + pageSize);
+
+  return {
+    items,
+    total,
+    page,
+    pageSize,
+    totalPages,
+  };
+};

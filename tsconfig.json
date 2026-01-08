@@ -17,13 +17,16 @@
 //   "include": ["next-env.d.ts", "**/*.mts", "**/*.ts", "**/*.tsx"],
 //   "exclude": ["node_modules"]
 // }
-
 {
   "compilerOptions": {
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -33,7 +36,6 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-
     "strict": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -43,21 +45,25 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
-
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": true
   },
-  "include": ["next-env.d.ts", "**/*.mts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.mts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

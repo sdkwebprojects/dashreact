@@ -1,13 +1,23 @@
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useState } from 'react';
 import WarningIcon from '../components/icons/WarningIcon';
 import ChevronRightStrokeIcon from '../components/icons/ChevronRightStrokeIcon';
 import SearchIcon from '../components/icons/SearchIcon';
 import VerticalDotsIcon from '../components/icons/VerticalDotsIcon';
+import InfoBanner from '../components/common/InfoBanner';
+import { Switch } from 'radix-ui';
+import { contractInfo, subscriptionStats, subscriptionData, subscriptionMenuActions, getPaginatedSubscriptions, SubscriptionItem } from '../dummyData/subscriptions-data';
+import MenuActionItem from '../components/patrimoine/MenuActionItem';
+import { Table, Column } from '../components/common/Table';
 
 export default function SubscriptionsPage(): React.JSX.Element {
   const { userInfo, data } = useAuth();
   const [activeTab, setActiveTab] = useState<'subscriptions' | 'contracts'>('subscriptions');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [showErrorsOnly, setShowErrorsOnly] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
 
   // Access control
   if (userInfo?.userType !== 'InstallateurPremiumWithSite') {
@@ -29,51 +39,137 @@ export default function SubscriptionsPage(): React.JSX.Element {
     return <div>Chargement...</div>;
   }
 
-  const contractInfo = {
-    contractNumber: '89764534',
-    expiryDate: '04/09/2025',
+  // Count modems with errors
+  const modemsWithErrorsCount = subscriptionData.filter(
+    (sub) => sub.modemHasErrors
+  ).length;
+
+  // Get paginated data
+  const paginatedData = getPaginatedSubscriptions({
+    page: currentPage,
+    pageSize,
+    searchQuery,
+    showErrorsOnly,
+  });
+
+  const filteredSubscriptions = paginatedData.items;
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, showErrorsOnly, pageSize]);
+
+  const toggleMenu = (id: string): void => {
+    setOpenMenuId(openMenuId === id ? null : id);
   };
 
-  const subscriptionStats = [
-    { label: 'Nombre de modem', value: '58', subtitle: 'Depuis le 01/01/2025' },
-    { label: 'Montant modem', value: '250,40 €', subtitle: 'Depuis le 01/01/2025' },
-    { label: 'Service additionnel', value: '564 €', subtitle: 'Depuis le 01/01/2025' },
-    { label: 'Total annuel', value: '4 520,80 €', subtitle: 'Depuis le 01/01/2025' },
-  ];
+  const handleMenuAction = (action: string, contractNumber: string): void => {
+    console.info(`Action: ${action}, Contract: ${contractNumber}`);
+    setOpenMenuId(null);
+  };
 
-  const subscriptionData = [
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent): void => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.menu-container')) {
+        setOpenMenuId(null);
+      }
+    };
+
+    if (openMenuId) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return (): void => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenuId]);
+
+  // Define table columns
+  const columns: Column<SubscriptionItem>[] = [
     {
-      contractNumber: '578619586',
-      site: 'Les coquelicots',
-      operator: 'LISA',
-      address: '3 impasse des coquelicots 75...',
-      contract: 'Du 04/09/2024\nau 04/09/2025',
-      billing: 'Pré-payé',
-      modemCount: '2 modems',
-      modemAmount: '0,90€ /mois',
-      additionalService: '1€ /mois',
+      key: 'contractNumber',
+      header: 'N° de contrat',
+      render: (sub) => (
+        <>
+          <div className="font-semibold">{sub.contractNumber}</div>
+          <div className="text-gray-600">{sub.operator}</div>
+        </>
+      ),
     },
     {
-      contractNumber: '628619595',
-      site: 'Jonquilles',
-      operator: 'Tel2Voice',
-      address: '94 rue de la jacquette 92120...',
-      contract: 'Du 21/06/2025',
-      billing: 'Mensuelle',
-      modemCount: '1 modem',
-      modemAmount: '0,45€ /mois',
-      additionalService: '10€ /mois',
+      key: 'site',
+      header: 'Nom et adresse du site',
+      render: (sub) => (
+        <>
+          <div className="font-semibold">{sub.site}</div>
+          <div className="text-gray-600">{sub.address}</div>
+        </>
+      ),
     },
     {
-      contractNumber: '168619552',
-      site: 'Primevère',
-      operator: 'LISA',
-      address: '56 av. de la Dordogne 50200...',
-      contract: 'Du 21/06/2025',
-      billing: 'Mensuelle',
-      modemCount: '9 modems',
-      modemAmount: '4,05€ /mois',
-      additionalService: 'Aucun',
+      key: 'contract',
+      header: 'Contrat',
+      render: (sub) => (
+        <span
+          className={`whitespace-pre-line ${
+            sub.contractExpireSoon ? 'text-[#FF8C00]' : 'text-gray-700'
+          }`}
+        >
+          {sub.contract}
+        </span>
+      ),
+    },
+    {
+      key: 'billing',
+      header: 'Facturation',
+    },
+    {
+      key: 'modemCount',
+      header: 'Modem et montant',
+      render: (sub) => (
+        <>
+          <div className="flex items-center gap-1">
+            {sub.modemHasErrors && (
+              <WarningIcon width={16} height={16} circleFill="#FF8C00" />
+            )}
+            <span>{sub.modemCount}</span>
+          </div>
+          <div className="text-gray-600">{sub.modemAmount}</div>
+        </>
+      ),
+    },
+    {
+      key: 'additionalService',
+      header: 'Service additionnel',
+    },
+    {
+      key: 'actions',
+      header: '',
+      headerClassName: 'w-10',
+      render: (sub) => (
+        <div className="relative menu-container">
+          <button
+            className="p-1 hover:bg-gray-100 rounded"
+            onClick={() => toggleMenu(sub.contractNumber)}
+          >
+            <VerticalDotsIcon width={16} height={16} />
+          </button>
+          {openMenuId === sub.contractNumber && (
+            <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-10 py-1">
+              {subscriptionMenuActions.map((action) => (
+                <MenuActionItem
+                  key={action.id}
+                  onClick={() => handleMenuAction(action.id, sub.contractNumber)}
+                >
+                  {action.label}
+                </MenuActionItem>
+              ))}
+            </div>
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -83,21 +179,19 @@ export default function SubscriptionsPage(): React.JSX.Element {
       <div className="flex border-b border-gray-300">
         <button
           onClick={() => setActiveTab('subscriptions')}
-          className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${
-            activeTab === 'subscriptions'
-              ? 'border-[#0066CC] text-[#0066CC]'
-              : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
+          className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${activeTab === 'subscriptions'
+            ? 'border-[#0066CC] text-[#0066CC]'
+            : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
         >
           Souscription
         </button>
         <button
           onClick={() => setActiveTab('contracts')}
-          className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${
-            activeTab === 'contracts'
-              ? 'border-[#0066CC] text-[#0066CC]'
-              : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
+          className={`px-4 py-2 text-[13px] font-semibold border-b-2 transition-colors ${activeTab === 'contracts'
+            ? 'border-[#0066CC] text-[#0066CC]'
+            : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
         >
           Contrats
         </button>
@@ -109,19 +203,16 @@ export default function SubscriptionsPage(): React.JSX.Element {
       {activeTab === 'subscriptions' && (
         <>
           {/* Contract expiry banner */}
-          <div className="flex items-center justify-between bg-[#FFF4E5] border border-[#FFB020] rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <WarningIcon width={20} height={20} />
-              <span className="text-sm text-stark">
-                Le contrat pré-payé n°{contractInfo.contractNumber} expire le{' '}
-                {contractInfo.expiryDate}.
-              </span>
-            </div>
-            <button className="flex items-center gap-1 text-[#0066CC] text-sm font-medium hover:underline">
-              Renouveler
-              <ChevronRightStrokeIcon width={16} height={16} />
-            </button>
-          </div>
+          <InfoBanner
+            variant="warning"
+            icon={<WarningIcon width={20} height={20} />}
+            message={`Le contrat pré-payé n°${contractInfo.contractNumber} expire le ${contractInfo.expiryDate}.`}
+            actionButton={{
+              label: 'Renouveler',
+              icon: <ChevronRightStrokeIcon width={16} height={16} stroke="#0066CC" />,
+              href: '/subscriptions',
+            }}
+          />
 
           {/* Stats cards */}
           <div className="grid grid-cols-4 gap-4">
@@ -139,113 +230,52 @@ export default function SubscriptionsPage(): React.JSX.Element {
             ))}
           </div>
 
-          {/* Search bar */}
-          <div className="flex items-center gap-4">
-            <div className="flex-1 relative">
-              <SearchIcon
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-                width={16}
-                height={16}
-                stroke="#8994B5"
-              />
-              <input
-                type="text"
-                placeholder="Rechercher par n° d'abonnement, n° de site, adresse"
-                className="w-full pl-10 pr-4 py-2 text-[13px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <label className="flex items-center gap-2 text-[13px] text-gray-700">
-              <input type="checkbox" className="rounded" />
-              Afficher uniquement les modems en erreur (3)
-            </label>
-          </div>
 
           {/* Subscriptions table */}
-          <div className="border border-gray-300 rounded-lg overflow-hidden">
-            <table className="w-full border-collapse">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    N° de contrat
-                  </th>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    Nom et adresse du site
-                  </th>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    Contrat
-                  </th>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    Facturation
-                  </th>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    Modem et montant
-                  </th>
-                  <th className="text-left font-semibold text-[#8994B5] text-[11px] p-3">
-                    Service additionnel
-                  </th>
-                  <th className="w-10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {subscriptionData.map((sub, index) => (
-                  <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
-                    <td className="p-3 text-[13px]">
-                      <div className="font-semibold">{sub.contractNumber}</div>
-                      <div className="text-gray-600">{sub.operator}</div>
-                    </td>
-                    <td className="p-3 text-[13px]">
-                      <div className="font-semibold">{sub.site}</div>
-                      <div className="text-gray-600">{sub.address}</div>
-                    </td>
-                    <td className="p-3 text-[13px] whitespace-pre-line text-gray-700">
-                      {sub.contract}
-                    </td>
-                    <td className="p-3 text-[13px]">{sub.billing}</td>
-                    <td className="p-3 text-[13px]">
-                      <div>{sub.modemCount}</div>
-                      <div className="text-gray-600">{sub.modemAmount}</div>
-                    </td>
-                    <td className="p-3 text-[13px]">{sub.additionalService}</td>
-                    <td className="p-3">
-                      <button className="p-1 hover:bg-gray-100 rounded">
-                        <VerticalDotsIcon width={16} height={16} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table
+            columns={columns}
+            data={filteredSubscriptions}
+            header={
+              <>
+                <div className="flex w-1/2 justify-between">
+                  <div className="flex-1 relative">
+                    <SearchIcon
+                      className="absolute left-3 top-1/2 -translate-y-1/2"
+                      width={16}
+                      height={16}
+                      stroke="#8994B5"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Rechercher par n° d'abonnement, n° de site, adresse"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 text-[13px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <label className="flex items-center gap-2 text-[13px] text-stark">
+                  <Switch.Root
+                    checked={showErrorsOnly}
+                    onCheckedChange={setShowErrorsOnly}
+                    className="relative h-4 w-7 rounded-full bg-[#BAC2D5] data-[state=checked]:bg-[#0066CC]"
+                  >
+                    <Switch.Thumb className="block size-3 translate-x-0.5 rounded-full bg-white transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[13px]" />
+                  </Switch.Root>
+                  Afficher uniquement les modems en erreur ({modemsWithErrorsCount})
+                </label>
+              </>
+            }
+            pagination={{
+              paginationData: paginatedData,
+              pageSize,
+              currentPage,
+              onPageChange: setCurrentPage,
+              onPageSizeChange: setPageSize,
+            }}
+            minHeight="600px"
+          />
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-[13px] text-gray-600">Afficher</span>
-              <select className="px-2 py-1 border border-gray-300 rounded text-[13px]">
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-              </select>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[13px] text-gray-600">1-25 sur 113</span>
-              <div className="flex gap-1">
-                <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-[13px] font-semibold text-[#0066CC]">
-                  1
-                </button>
-                <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-[13px]">
-                  2
-                </button>
-                <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-[13px]">
-                  3
-                </button>
-                <span className="px-3 py-1 text-[13px]">...</span>
-                <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-[13px]">
-                  5
-                </button>
-              </div>
-            </div>
-          </div>
         </>
       )}
 

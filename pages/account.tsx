@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'radix-ui';
 import AccountCard from '../components/account/AccountCard';
 import InformationsPersonnelles from '../components/account/InformationsPersonnelles';

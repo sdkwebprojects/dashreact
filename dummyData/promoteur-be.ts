@@ -32,19 +32,19 @@ export const QuoteData = [
   'Être accompagné par un commercial',
 ];
 
-// Services
+// Promoteur BE specific services
 export const Services = [
-  'Simuler mon projet',
-  'Trouver un installateur',
-  'Faire un retour SAV',
-  'Service après-vente',
+  'Découvrir les solutions URMET',
+  'Accéder aux CCTP',
+  'Découvrir nos engagements RSE',
+  'Trouver un commercial',
   'Explorer tous nos services',
 ];
 
 // Favorite Products
 export { FavoriteProducts, type FavoriteProduct } from './favorite-products';
 
-// Orders Data
+// Orders Data (same as other user types)
 export const OrdersHeadings = [
   'Ref. Produit',
   'Produit ou service',
@@ -148,9 +148,9 @@ export const AccountData: AccountSection[] = [
   {
     title: 'Informations personnelles',
     fields: [
-      { label: 'Civilité', value: 'Mme' },
-      { label: 'Nom et prénom', value: 'DELARUE Claudine' },
-      { label: 'Société', value: 'Entreprise DELARUE' },
+      { label: 'Civilité', value: 'M.' },
+      { label: 'Nom et prénom', value: 'PROMOTEUR Jean' },
+      { label: 'Société', value: 'Promoteur BE SARL' },
     ],
   },
   {
@@ -158,7 +158,7 @@ export const AccountData: AccountSection[] = [
     fields: [
       {
         label: 'Adresse de facturation',
-        value: ['20 rue ramier', '75001 Paris', 'France'],
+        value: ['15 rue de la Construction', '1000 Bruxelles', 'Belgique'],
       },
       {
         label: '',
@@ -169,9 +169,9 @@ export const AccountData: AccountSection[] = [
   {
     title: 'Moyen de paiement',
     fields: [
-      { label: 'Mode de paiement', value: 'Prélèvement mensuel' },
-      { label: 'Banque', value: 'LCL' },
-      { label: 'IBAN', value: 'FR**** **** **** **** **75G649 **' },
+      { label: 'Mode de paiement', value: 'Virement bancaire' },
+      { label: 'Banque', value: 'BNP Paribas Fortis' },
+      { label: 'IBAN', value: 'BE** **** **** **** **12C345 **' },
     ],
   },
 ];

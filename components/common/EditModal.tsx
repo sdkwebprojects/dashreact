@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import CloseIcon from '../icons/CloseIcon';
 

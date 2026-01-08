@@ -1,5 +1,6 @@
 import React from 'react';
 import ChevronRightIcon from '../icons/ChevronRightIcon';
+import Link from 'next/link';
 
 interface PremiumOffer {
   title: string;
@@ -52,9 +53,9 @@ const PremiumOffers: React.FC<PremiumOffersProps> = ({ offers, showTitle = true 
     <div className="flex flex-col border border-gray-300 rounded-lg">
       <div className="flex items-center justify-between p-4">
         <h3 className="font-semibold text-stark">Votre offre premium</h3>
-        <button className="text-sm font-semibold text-[#0066CC] border p-2 rounded-lg border-[#0066CC] hover:bg-blue-50">
+        <Link href="/premium" className="text-sm font-semibold text-[#0066CC] border p-2 rounded-lg border-[#0066CC] hover:bg-blue-50">
           Voir vos avantages
-        </button>
+        </Link>
       </div>
       {offersContent}
     </div>
