@@ -24462,9 +24462,9 @@ function AppContent(_ref) {
     className: "flex-1"
   }, _react["default"].createElement(Component, pageProps))));
 }
-function App(props) {
+var window.App = function App(props) {
   return _react["default"].createElement(_AuthContext.AuthProvider, null, _react["default"].createElement(AppContent, props));
-}
+};
 var _default = exports["default"] = App;
 
 },{"../components/NavigationMenu":205,"../components/UserTypeSelector":206,"../contexts/AuthContext":208,"react":179}],216:[function(require,module,exports){
