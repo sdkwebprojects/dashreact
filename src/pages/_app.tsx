@@ -1,6 +1,5 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
-import '../global.css';
 import NavigationMenu from '../components/NavigationMenu';
 import UserTypeSelector from '../components/UserTypeSelector';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
