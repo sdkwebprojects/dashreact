@@ -36,7 +36,7 @@ function AppContent(_ref) {
     className: "flex-1"
   }, /*#__PURE__*/_react["default"].createElement(Component, pageProps))));
 }
-const App = (props) => {
+function App(props) {
   return /*#__PURE__*/_react["default"].createElement(_AuthContext.AuthProvider, null, /*#__PURE__*/_react["default"].createElement(AppContent, props));
 }
 var _default = exports["default"] = App;

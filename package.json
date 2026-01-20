@@ -26,6 +26,7 @@
     "dev": "next dev",
     "build": "next build",
     "buildjs": "npx babel src/pages/_app.tsx -o src/pages/_app.js; node build.cjs",
+    "buildtsx": "node build.cjs",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
