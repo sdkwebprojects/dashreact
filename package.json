@@ -25,8 +25,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "buildjs": "npx babel src/pages/_app.tsx -o src/pages/_app.js; node build.cjs",
-    "buildtsx": "node build.cjs",
+    "buildMagento": "node build.cjs;npx babel src/pages/_magento.js -o src/pages/_magento.compiled.js",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix"

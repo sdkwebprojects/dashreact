@@ -14,4 +14,4 @@ class Magento extends React.Component {
     }
 }
 
-const App = () => /*#__PURE__*/React.createElement(Magento, {});
+const magentoApp = () => /*#__PURE__*/React.createElement(Magento, {});
